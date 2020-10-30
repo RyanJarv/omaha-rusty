@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: Omaha
+  description: Simplified Omaha server in Rust
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+servers:
+- url: https://virtserver.swaggerhub.com/RyanJarv/Omaha/0.1.0
+  description: SwaggerHub API Auto Mocking
+- url: http
+paths:
+  /service/update2:
+    put:
+      summary: Update check endpoint
+      operationId: checkUpdate
+      requestBody:
+        $ref: '#/components/requestBodies/request'
+      responses:
+        "405":
+          description: Invalid ID supplied
+components:
+  schemas:
+    request:
+      title: UpdateCheck
+      type: object
+      properties:
+        protocal:
+          type: number
+          xml:
+            attribute: true
+        version:
+          type: number
+          xml:
+            attribute: true
+        ismachine:
+          type: integer
+          xml:
+            attribute: true
+        sessionid:
+          type: string
+          format: uuid
+          xml:
+            attribute: true
+        userid:
+          type: string
+          format: uuid
+          xml:
+            attribute: true
+        installsource:
+          type: string
+          xml:
+            attribute: true
+        testsource:
+          type: string
+          xml:
+            attribute: true
+        requestid:
+          type: string
+          format: uuid
+          xml:
+            attribute: true
+        hw:
+          $ref: '#/components/schemas/request_hw'
+        os:
+          $ref: '#/components/schemas/request_os'
+        app:
+          type: array
+          items:
+            $ref: '#/components/schemas/app'
+        updatecheck:
+          type: object
+        ping:
+          $ref: '#/components/schemas/request_ping'
+      xml:
+        name: request
+    app:
+      type: object
+      properties:
+        appid:
+          type: string
+          format: uuid
+          xml:
+            attribute: true
+        version:
+          type: string
+          description: check type
+          xml:
+            attribute: true
+        nextversion:
+          type: string
+          description: check if needs to be nillable
+          xml:
+            attribute: true
+        lang:
+          type: string
+          description: check languages
+          xml:
+            attribute: true
+        brand:
+          type: string
+          xml:
+            attribute: true
+        client:
+          type: string
+          xml:
+            attribute: true
+        installage:
+          type: integer
+          xml:
+            attribute: true
+    request_hw:
+      type: object
+      properties:
+        sse2:
+          type: integer
+          xml:
+            attribute: true
+    request_os:
+      type: object
+      properties:
+        platform:
+          type: string
+          xml:
+            attribute: true
+        version:
+          type: number
+          xml:
+            attribute: true
+        sp:
+          type: string
+          description: check what this is
+          xml:
+            attribute: true
+        arch:
+          type: string
+          xml:
+            attribute: true
+    request_ping:
+      type: object
+      properties:
+        r:
+          type: integer
+          xml:
+            attribute: true
+  requestBodies:
+    request:
+      description: Check if an update is available
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/request'
+      required: true
